@@ -39,6 +39,24 @@ main {
     border-radius: 25px;
     padding: 3px 20px;
     font-family: 'Times New Roman', Times, serif;
+    cursor: pointer;
+}
+
+#question-panel {
+    animation-duration: 0.5s;
+    animation-name: slide-in;
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translate(-100px);
+    }
+
+    to {
+        opacity: 100%;
+        transform: none;
+    }
 }
 
 ol {
@@ -60,4 +78,16 @@ ol li button {
     width: 200px;
     font-size: inherit;
     border: none;
+    cursor: pointer;
+}
+
+button.correct {
+    background-color: #008800;
+    transition: background-color 0.2s;
+}
+
+.exit {
+    opacity: 0;
+    transform: translate(-100px);
+    transition: all 0.5s;
 }

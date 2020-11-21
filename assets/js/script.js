@@ -26,23 +26,24 @@ var score = 0;
 var questionCount = 0;
 
 var clickHandler = function(event) {
-    if (event.target.id = "start") {
-        startPanelEl.remove();
-        questionRender();
+    if (event.target.id === "start") {
+        startPanelEl.className = "exit";
+        window.setTimeout(function() {
+            startPanelEl.remove();
+            questionRender();
+        }, 500);
+        
     } else {
-        responseHandler();
+        responseHandler(event);
     }
 }
 
 var questionRender = function() {
-    questionCount++;
-
     var questionPanelEl = document.createElement("div");
-    questionPanelEl.className = "question-panel";
     questionPanelEl.id = "question-panel";
 
     var questionHeaderEl = document.createElement("h2");
-    questionHeaderEl.textContent = "Question " + questionCount;
+    questionHeaderEl.textContent = "Question " + (questionCount + 1);
     questionPanelEl.appendChild(questionHeaderEl);
 
     var questionTextEl = document.createElement("p");
@@ -57,15 +58,19 @@ var questionRender = function() {
         switch (i) {
             case 0:
                 answerButton.textContent = questions[questionCount].A;
+                answerButton.id = "A";
                 break;
             case 1:
                 answerButton.textContent = questions[questionCount].B;
+                answerButton.id = "B";
                 break;
             case 2:
                 answerButton.textContent = questions[questionCount].C;
+                answerButton.id = "C";
                 break;
             case 3:
                 answerButton.textContent = questions[questionCount].D;
+                answerButton.id = "D";
                 break;
         }
         answerList.appendChild(answerOption);
@@ -73,6 +78,24 @@ var questionRender = function() {
     questionPanelEl.appendChild(answerList);
 
     mainEl.appendChild(questionPanelEl);
+    // questionCount++;
+}
+
+var responseHandler = function(event) {
+    if (event.target.id === questions[questionCount].correct) {
+        // debugger;
+        event.target.className = "correct";
+        score++;
+        questionCount++;
+        var questionPanelEl = document.querySelector("#question-panel");
+        window.setTimeout(function() {
+            questionPanelEl.className = "exit";
+            window.setTimeout(function() {
+                questionPanelEl.remove();
+                questionRender();
+            }, 500);
+        }, 1000);
+    }
 }
 
 // startButtonEl.addEventListener("click", startHandler);
