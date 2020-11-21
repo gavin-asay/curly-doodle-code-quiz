@@ -40,3 +40,24 @@ main {
     padding: 3px 20px;
     font-family: 'Times New Roman', Times, serif;
 }
+
+ol {
+    list-style-type: upper-latin;
+}
+
+ol li {
+    display: inline-block;
+}
+
+ol li button {
+    appearance: none;
+    padding: 10px 20px;
+    margin: 15px 15px;
+    background-color: #880000;
+    color: white;
+    border-radius: 25px;
+    box-shadow: 6px 6px #444;
+    width: 200px;
+    font-size: inherit;
+    border: none;
+}
