@@ -33,6 +33,19 @@ var clickHandler = function(event) {
             questionRender();
         }, 500);
         
+        window.setTimeout(function() {
+            var questionPanelEl = document.querySelector("#question-panel");
+            questionPanelEl.className = "exit";
+            setTimeout(function() {
+                questionPanelEl.remove();
+            }, 500);
+            var timeOutEl = document.createElement("div");
+            timeOutEl.className = "time-out";
+            timeOutEl.textContent = "Time's up!";
+            mainEl.appendChild(timeOutEl);
+            return;
+        }, 5000);
+        
     } else {
         responseHandler(event);
     }

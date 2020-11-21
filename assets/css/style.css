@@ -91,3 +91,15 @@ button.correct {
     transform: translate(-100px);
     transition: all 0.5s;
 }
+
+.time-out {
+    position: fixed;
+    z-index: 9999;
+    top: 50%;
+    background-color: #fff;
+    color: #000;
+    margin: 0 auto;
+    text-align: center;
+    animation-name: slide-in;
+    font-size: 4em;
+}
