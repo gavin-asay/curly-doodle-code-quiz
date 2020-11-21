@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    font-family: sans-serif, Helvetica;
+}
+
+header {
+    background-color: greenyellow;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    margin: 0;
+}
+
+header p {
+    margin-top: 5px;
+}
+
+main {
+    margin: 100px auto 10px auto;
+    max-width: 700px;
+}
+
+/* main p {
+    max-width: 600px;
+} */
+
+.strikethrough {
+    text-decoration: line-through;
+}
+
+#start {
+    margin: 0 auto 0 100px;
+    display: block;
+    font-size: 2.5em;
+    color: #880000;
+    border-radius: 25px;
+    padding: 3px 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
