@@ -80,15 +80,15 @@ main {
     }
 }
 
-ol {
+#question-panel ol {
     list-style-type: upper-latin;
 }
 
-ol li {
+#question-panel ol li {
     display: inline-block;
 }
 
-ol li button {
+#question-panel ol li button {
     appearance: none;
     padding: 10px 20px;
     margin: 15px 15px;
@@ -103,7 +103,7 @@ ol li button {
     cursor: pointer;
 }
 
-ol li button:hover {
+#question-panel ol li button:hover {
     background-color: #0000ee;
     transition: background-color 0.2s;
 }

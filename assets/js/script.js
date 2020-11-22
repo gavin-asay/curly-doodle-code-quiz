@@ -64,6 +64,7 @@ var mainEl = document.querySelector("main");
 var timeLeft = 59;
 var score = 0;
 var questionCount = 0;
+var scoreList = [];
 
 var clickHandler = function(event) {
     if (event.target.id === "start") {
@@ -81,7 +82,7 @@ var startGame = function() {
     window.setTimeout(function() {
         startPanelEl.remove();
         timerContainerEl.className = "visible";
-        debugger;
+        // debugger;
         questionRender();
     }, 500);
 
@@ -132,10 +133,11 @@ var startGame = function() {
         timeOutEl.appendChild(instructionEl);
         timeOutEl.appendChild(scoreFormEl);
         
-        scoreFormEl.addEventListener("submit", scoreHandler);
+        mainEl.removeEventListener("click", clickHandler);
 
         mainEl.appendChild(timeOutEl);
-    }, 5000);
+        scoreFormEl.addEventListener("submit", scoreHandler);
+    }, 61000);
 }
 
 var questionRender = function() {
@@ -214,15 +216,41 @@ var responseHandler = function(event) {
 }
 
 var scoreHandler = function(event) {
-    localStorage.setItem(initialInputEl, toString(score));
+    event.preventDefault();
+    console.log(event);
+    var initials = document.querySelector("#score-submit input").value;
+    // debugger;
+    localStorage.setItem(JSON.stringify(localStorage.length), JSON.stringify({name: initials, score: score.toString() }));
+    
     window.setTimeout(function() {
+        var timeOutEl = document.querySelector("#time-out");
         timeOutEl.className = "exit";
         window.setTimeout(function() {
             timeOutEl.remove();
         }, 500);
     }, 1000);
 
-    
+    scoreboardEl = document.createElement("div");
+    scoreboardEl.id = "scoreboard";
+    var scoreboardHeaderEl = document.createElement("h2");
+    scoreboardHeaderEl.textContent = "High Scores";
+    listEl = document.createElement("ol");
+   
+    for (i = 0; i < localStorage.length; i++) {
+        // debugger;
+        var keyValue = JSON.parse(localStorage.getItem(i.toString()));
+        scoreList.push(keyValue);
+        listItemEl = document.createElement("li");
+        listItemEl.textContent = scoreList[i].name + ": " + scoreList[i].score;
+        listEl.appendChild(listItemEl);
+        scoreList.sort(function(a, b) {
+            return b.score - a.score;
+        });
+    }
+
+    scoreboardEl.appendChild(scoreboardHeaderEl);
+    scoreboardEl.appendChild(listEl);
+    mainEl.appendChild(scoreboardEl);
 }
 
 // startButtonEl.addEventListener("click", startHandler);
