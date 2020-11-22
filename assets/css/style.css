@@ -14,13 +14,28 @@ h1 {
     margin: 0;
 }
 
+h2 {
+    font-size: 18pt;
+}
+
 header p {
     margin-top: 5px;
 }
 
 main {
-    margin: 100px auto 10px auto;
+    margin: 0 auto 10px auto;
     max-width: 700px;
+}
+
+#timer {
+    margin: 25px auto;
+    text-align: center;
+    opacity: 0;
+    line-height: 50px;
+}
+
+#timer.visible {
+    opacity: 100%;
 }
 
 /* main p {
@@ -31,15 +46,29 @@ main {
     text-decoration: line-through;
 }
 
+/* #start-panel {
+    margin: 100px auto 0 auto;
+} */
+
 #start {
-    margin: 0 auto 0 100px;
+    margin: 0 auto;
     display: block;
     font-size: 2.5em;
-    color: #880000;
+    background-color: #880000;
+    transition: background-color 0.2s;
+    color: #fff;
     border-radius: 25px;
     padding: 3px 20px;
     font-family: 'Times New Roman', Times, serif;
     cursor: pointer;
+    appearance: none;
+    border: none;
+    box-shadow: 6px 6px #444;
+}
+
+#start:hover {
+    background-color: #aa0000;
+    transition: background-color 0.2s;
 }
 
 #question-panel {
@@ -71,7 +100,8 @@ ol li button {
     appearance: none;
     padding: 10px 20px;
     margin: 15px 15px;
-    background-color: #880000;
+    background-color: #000088;
+    transition: background-color 0.2s;
     color: white;
     border-radius: 25px;
     box-shadow: 6px 6px #444;
@@ -81,8 +111,18 @@ ol li button {
     cursor: pointer;
 }
 
-button.correct {
+ol li button:hover {
+    background-color: #0000ee;
+    transition: background-color 0.2s;
+}
+
+button.correct, button.correct:hover {
     background-color: #008800;
+    transition: background-color 0.2s;
+}
+
+button.incorrect, button.incorrect:hover {
+    background-color: #880000;
     transition: background-color 0.2s;
 }
 

@@ -27,28 +27,42 @@ var questionCount = 0;
 
 var clickHandler = function(event) {
     if (event.target.id === "start") {
-        startPanelEl.className = "exit";
-        window.setTimeout(function() {
-            startPanelEl.remove();
-            questionRender();
-        }, 500);
-        
-        window.setTimeout(function() {
-            var questionPanelEl = document.querySelector("#question-panel");
-            questionPanelEl.className = "exit";
-            setTimeout(function() {
-                questionPanelEl.remove();
-            }, 500);
-            var timeOutEl = document.createElement("div");
-            timeOutEl.className = "time-out";
-            timeOutEl.textContent = "Time's up!";
-            mainEl.appendChild(timeOutEl);
-            return;
-        }, 5000);
-        
+        startGame();
     } else {
         responseHandler(event);
     }
+}
+
+var startGame = function() {
+    // debugger;
+    var timerEl = document.querySelector("#timer");
+    startPanelEl.className = "exit";
+    window.setTimeout(function() {
+        startPanelEl.remove();
+        timerEl.className = "visible";
+        questionRender();
+    }, 500);
+
+    var timeLeft = 59;
+    window.setInterval(function() {
+        if (timeLeft >= 0) {
+            timerEl.textContent = timeLeft + " seconds remaining";
+            timeLeft--;
+        }
+    }, 1000);
+    
+    window.setTimeout(function() {
+        var questionPanelEl = document.querySelector("#question-panel");
+        questionPanelEl.className = "exit";
+        setTimeout(function() {
+            questionPanelEl.remove();
+        }, 500);
+        var timeOutEl = document.createElement("div");
+        timeOutEl.className = "time-out";
+        timeOutEl.textContent = "Time's up!";
+        mainEl.appendChild(timeOutEl);
+        return;
+    }, 61000);
 }
 
 var questionRender = function() {
@@ -95,12 +109,23 @@ var questionRender = function() {
 }
 
 var responseHandler = function(event) {
+    var questionPanelEl = document.querySelector("#question-panel");
     if (event.target.id === questions[questionCount].correct) {
         // debugger;
         event.target.className = "correct";
         score++;
         questionCount++;
-        var questionPanelEl = document.querySelector("#question-panel");
+        window.setTimeout(function() {
+            questionPanelEl.className = "exit";
+            window.setTimeout(function() {
+                questionPanelEl.remove();
+                questionRender();
+            }, 500);
+        }, 1000);
+    } else if (event.target.id !== questions[questionCount].correct) {
+        event.target.className = "incorrect";
+        questionCount++;
+        document.querySelector("#" + questions[questionCount].correct).className = "correct";
         window.setTimeout(function() {
             questionPanelEl.className = "exit";
             window.setTimeout(function() {
