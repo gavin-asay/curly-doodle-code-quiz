@@ -61,7 +61,7 @@ var startButtonEl = document.querySelector("button#start");
 var startPanelEl = document.querySelector("#start-panel");
 var mainEl = document.querySelector("main");
 
-var timer = 60;
+var timeLeft = 59;
 var score = 0;
 var questionCount = 0;
 
@@ -81,10 +81,10 @@ var startGame = function() {
     window.setTimeout(function() {
         startPanelEl.remove();
         timerContainerEl.className = "visible";
+        debugger;
         questionRender();
     }, 500);
 
-    var timeLeft = 59;
     window.setInterval(function() {
         if (timeLeft >= 0) {
             timerEl.textContent = timeLeft + " seconds remaining";
@@ -98,12 +98,44 @@ var startGame = function() {
         setTimeout(function() {
             questionPanelEl.remove();
         }, 500);
+        
         var timeOutEl = document.createElement("div");
-        timeOutEl.className = "time-out";
-        timeOutEl.textContent = "Time's up!";
+        timeOutEl.id = "time-out";
+        
+        var h2EndEl = document.createElement("h2");
+        h2EndEl.textContent = "Time's up!";
+        
+        var h3ScoreEl = document.createElement("h3");
+        h3ScoreEl.textContent = "Final Score: " + score;
+
+        var instructionEl = document.createElement("p");
+        instructionEl.textContent = "Enter your initials (two to four characters)";
+        
+        var scoreFormEl = document.createElement("form");
+        scoreFormEl.id = "score-submit";
+        
+        var initialInputEl = document.createElement("input");
+        initialInputEl.setAttribute("type", "text");
+        initialInputEl.setAttribute("minlength", "2");
+        initialInputEl.setAttribute("maxlength", "4");
+        initialInputEl.setAttribute("size", "7");
+
+        var submitButtonEl = document.createElement("button");
+        submitButtonEl.id = "score-button";
+        submitButtonEl.textContent = "Submit";
+
+        scoreFormEl.appendChild(initialInputEl);
+        scoreFormEl.appendChild(submitButtonEl);
+
+        timeOutEl.appendChild(h2EndEl);
+        timeOutEl.appendChild(h3ScoreEl);
+        timeOutEl.appendChild(instructionEl);
+        timeOutEl.appendChild(scoreFormEl);
+        
+        scoreFormEl.addEventListener("submit", scoreHandler);
+
         mainEl.appendChild(timeOutEl);
-        return;
-    }, 61000);
+    }, 5000);
 }
 
 var questionRender = function() {
@@ -145,7 +177,9 @@ var questionRender = function() {
     }
     questionPanelEl.appendChild(answerList);
 
-    mainEl.appendChild(questionPanelEl);
+    if (timeLeft >= 0) {
+        mainEl.appendChild(questionPanelEl);
+    }
     // questionCount++;
 }
 
@@ -177,6 +211,18 @@ var responseHandler = function(event) {
             }, 500);
         }, 1000);
     }
+}
+
+var scoreHandler = function(event) {
+    localStorage.setItem(initialInputEl, toString(score));
+    window.setTimeout(function() {
+        timeOutEl.className = "exit";
+        window.setTimeout(function() {
+            timeOutEl.remove();
+        }, 500);
+    }, 1000);
+
+    
 }
 
 // startButtonEl.addEventListener("click", startHandler);
