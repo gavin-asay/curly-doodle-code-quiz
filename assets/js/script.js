@@ -14,6 +14,14 @@ var questions = [
         C: "space-around",
         D: "space-between",
         correct: "A"
+    },
+    {
+        question: "",
+        A: "",
+        B: "",
+        C: "",
+        D: "",
+        correct: ""
     }
 ];
 
@@ -35,11 +43,12 @@ var clickHandler = function(event) {
 
 var startGame = function() {
     // debugger;
+    var timerContainerEl = document.querySelector("#timer-container");
     var timerEl = document.querySelector("#timer");
     startPanelEl.className = "exit";
     window.setTimeout(function() {
         startPanelEl.remove();
-        timerEl.className = "visible";
+        timerContainerEl.className = "visible";
         questionRender();
     }, 500);
 
@@ -110,25 +119,27 @@ var questionRender = function() {
 
 var responseHandler = function(event) {
     var questionPanelEl = document.querySelector("#question-panel");
+    var scoreDisplayEl = document.querySelector("#score-display");
     if (event.target.id === questions[questionCount].correct) {
         // debugger;
         event.target.className = "correct";
         score++;
-        questionCount++;
+        scoreDisplayEl.textContent = "Score: " + score;
         window.setTimeout(function() {
             questionPanelEl.className = "exit";
             window.setTimeout(function() {
+                questionCount++;
                 questionPanelEl.remove();
                 questionRender();
             }, 500);
         }, 1000);
     } else if (event.target.id !== questions[questionCount].correct) {
         event.target.className = "incorrect";
-        questionCount++;
         document.querySelector("#" + questions[questionCount].correct).className = "correct";
         window.setTimeout(function() {
             questionPanelEl.className = "exit";
             window.setTimeout(function() {
+                questionCount++;
                 questionPanelEl.remove();
                 questionRender();
             }, 500);

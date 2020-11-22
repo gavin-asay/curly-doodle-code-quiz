@@ -27,28 +27,20 @@ main {
     max-width: 700px;
 }
 
-#timer {
-    margin: 25px auto;
-    text-align: center;
+#timer-container {
     opacity: 0;
-    line-height: 50px;
+    text-align: center;
+    height: 50px;
+    margin: 25px auto;
 }
 
-#timer.visible {
+#timer-container.visible {
     opacity: 100%;
 }
-
-/* main p {
-    max-width: 600px;
-} */
 
 .strikethrough {
     text-decoration: line-through;
 }
-
-/* #start-panel {
-    margin: 100px auto 0 auto;
-} */
 
 #start {
     margin: 0 auto;
@@ -123,6 +115,7 @@ button.correct, button.correct:hover {
 
 button.incorrect, button.incorrect:hover {
     background-color: #880000;
+    text-decoration: line-through;
     transition: background-color 0.2s;
 }
 
