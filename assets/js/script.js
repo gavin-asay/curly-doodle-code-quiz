@@ -16,13 +16,45 @@ var questions = [
         correct: "A"
     },
     {
+        question: "Which symbol signifies an ID in a CSS selector?",
+        A: ".",
+        B: "@",
+        C: "*",
+        D: "#",
+        correct: "D"
+    },
+    {
+        question: "Which of the following keywords ends execution of a function?",
+        A: "for",
+        B: "return",
+        C: "else",
+        D: "switch",
+        correct: "B"
+    },
+    {
+        question: "CSS rulesets for which pseudo-class will likely be poorly supported on mobile devices?",
+        A: ":hover",
+        B: ":visited",
+        C: ":nth-child",
+        D: ":checked",
+        correct: "A"
+    },
+    {
+        question: "DOM stands for _______.",
+        A: "Document Object Model",
+        B: "Domain Operation Method",
+        C: "Document Option Manager",
+        D: "Download Operation Model",
+        correct: "A"
+    },
+    {
         question: "",
         A: "",
         B: "",
         C: "",
         D: "",
         correct: ""
-    }
+    },
 ];
 
 var startButtonEl = document.querySelector("button#start");
