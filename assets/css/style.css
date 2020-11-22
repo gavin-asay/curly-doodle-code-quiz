@@ -63,7 +63,7 @@ main {
     transition: background-color 0.2s;
 }
 
-#question-panel {
+#question-panel, #scoreboard {
     animation-duration: 0.5s;
     animation-name: slide-in;
 }
@@ -82,13 +82,14 @@ main {
 
 #question-panel ol {
     list-style-type: upper-latin;
+    width: 460px;
 }
 
 #question-panel ol li {
     display: inline-block;
 }
 
-#question-panel ol li button {
+ol li button {
     appearance: none;
     padding: 10px 20px;
     margin: 15px 15px;
@@ -103,7 +104,7 @@ main {
     cursor: pointer;
 }
 
-#question-panel ol li button:hover {
+ol li button:hover {
     background-color: #0000ee;
     transition: background-color 0.2s;
 }

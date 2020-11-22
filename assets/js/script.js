@@ -35,7 +35,7 @@ var questions = [
         question: "CSS rulesets for which pseudo-class will likely be poorly supported on mobile devices?",
         A: ":hover",
         B: ":visited",
-        C: ":nth-child",
+        C: ":focus",
         D: ":checked",
         correct: "A"
     },
@@ -188,7 +188,8 @@ var questionRender = function() {
 var responseHandler = function(event) {
     var questionPanelEl = document.querySelector("#question-panel");
     var scoreDisplayEl = document.querySelector("#score-display");
-    if (event.target.id === questions[questionCount].correct) {
+    console.log(event.target);
+    if (event.target.matches("button#" + questions[questionCount].correct)) {
         // debugger;
         event.target.className = "correct";
         score++;
@@ -201,7 +202,7 @@ var responseHandler = function(event) {
                 questionRender();
             }, 500);
         }, 1000);
-    } else if (event.target.id !== questions[questionCount].correct) {
+    } else if (event.target.id !== questions[questionCount].correct && event.target.matches("button")) {
         event.target.className = "incorrect";
         document.querySelector("#" + questions[questionCount].correct).className = "correct";
         window.setTimeout(function() {
@@ -242,10 +243,10 @@ var scoreHandler = function(event) {
         scoreList.push(keyValue);
         listItemEl = document.createElement("li");
         listItemEl.textContent = scoreList[i].name + ": " + scoreList[i].score;
-        listEl.appendChild(listItemEl);
         scoreList.sort(function(a, b) {
             return b.score - a.score;
         });
+        listEl.appendChild(listItemEl);
     }
 
     scoreboardEl.appendChild(scoreboardHeaderEl);
@@ -253,5 +254,4 @@ var scoreHandler = function(event) {
     mainEl.appendChild(scoreboardEl);
 }
 
-// startButtonEl.addEventListener("click", startHandler);
 mainEl.addEventListener("click", clickHandler);
