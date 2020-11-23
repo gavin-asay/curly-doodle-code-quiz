@@ -48,6 +48,22 @@ var questions = [
         correct: "A"
     },
     {
+        question: "Math.random() returns a number between _______.",
+        A: "1 and 10",
+        B: "1 and 100",
+        C: "0 and 100",
+        D: "0 and 1",
+        correct: "D"
+    },
+    {
+        question: "Which method always rounds a number down to the nearest integer?",
+        A: "Math.round()",
+        B: "Math.floor()",
+        C: "Math.toInt()",
+        D: "Math.ceil()",
+        correct: "B"
+    },
+    {
         question: "",
         A: "",
         B: "",
@@ -57,14 +73,18 @@ var questions = [
     },
 ];
 
+var mainEl = document.querySelector("main");
 var startButtonEl = document.querySelector("button#start");
 var startPanelEl = document.querySelector("#start-panel");
-var mainEl = document.querySelector("main");
+var timerContainerEl = document.querySelector("#timer-container");
 
 var timeLeft = 59;
 var score = 0;
 var questionCount = 0;
 var scoreList = [];
+var timeLimit = window.setTimeout(function() {
+    endGame("time out");
+}, 61000);
 
 var clickHandler = function(event) {
     if (event.target.id === "start") {
@@ -76,7 +96,6 @@ var clickHandler = function(event) {
 
 var startGame = function() {
     // debugger;
-    var timerContainerEl = document.querySelector("#timer-container");
     var timerEl = document.querySelector("#timer");
     startPanelEl.className = "exit";
     window.setTimeout(function() {
@@ -88,101 +107,64 @@ var startGame = function() {
 
     window.setInterval(function() {
         if (timeLeft >= 0) {
-            timerEl.textContent = timeLeft + " seconds remaining";
-            timeLeft--;
+            timerEl.textContent = Math.ceil(timeLeft) + " seconds remaining";
+            timeLeft -= 0.5;
         }
-    }, 1000);
-    
-    window.setTimeout(function() {
-        var questionPanelEl = document.querySelector("#question-panel");
-        questionPanelEl.className = "exit";
-        setTimeout(function() {
-            questionPanelEl.remove();
-        }, 500);
-        
-        var timeOutEl = document.createElement("div");
-        timeOutEl.id = "time-out";
-        
-        var h2EndEl = document.createElement("h2");
-        h2EndEl.textContent = "Time's up!";
-        
-        var h3ScoreEl = document.createElement("h3");
-        h3ScoreEl.textContent = "Final Score: " + score;
+    }, 500);
 
-        var instructionEl = document.createElement("p");
-        instructionEl.textContent = "Enter your initials (two to four characters)";
-        
-        var scoreFormEl = document.createElement("form");
-        scoreFormEl.id = "score-submit";
-        
-        var initialInputEl = document.createElement("input");
-        initialInputEl.setAttribute("type", "text");
-        initialInputEl.setAttribute("minlength", "2");
-        initialInputEl.setAttribute("maxlength", "4");
-        initialInputEl.setAttribute("size", "7");
-
-        var submitButtonEl = document.createElement("button");
-        submitButtonEl.id = "score-button";
-        submitButtonEl.textContent = "Submit";
-
-        scoreFormEl.appendChild(initialInputEl);
-        scoreFormEl.appendChild(submitButtonEl);
-
-        timeOutEl.appendChild(h2EndEl);
-        timeOutEl.appendChild(h3ScoreEl);
-        timeOutEl.appendChild(instructionEl);
-        timeOutEl.appendChild(scoreFormEl);
-        
-        mainEl.removeEventListener("click", clickHandler);
-
-        mainEl.appendChild(timeOutEl);
-        scoreFormEl.addEventListener("submit", scoreHandler);
-    }, 61000);
+    timeLimit;
 }
 
 var questionRender = function() {
-    var questionPanelEl = document.createElement("div");
-    questionPanelEl.id = "question-panel";
+    if (questionCount + 1 > questions.length) {
+        endGame("finish");
+    } else {
+        var questionPanelEl = document.createElement("div");
+        questionPanelEl.id = "question-panel";
 
-    var questionHeaderEl = document.createElement("h2");
-    questionHeaderEl.textContent = "Question " + (questionCount + 1);
-    questionPanelEl.appendChild(questionHeaderEl);
+        var questionHeaderEl = document.createElement("h2");
+        questionHeaderEl.textContent = "Question " + (questionCount + 1);
+        questionPanelEl.appendChild(questionHeaderEl);
 
-    var questionTextEl = document.createElement("p");
-    questionTextEl.textContent = questions[questionCount].question;
-    questionPanelEl.appendChild(questionTextEl);
+        var questionTextEl = document.createElement("p");
+        questionTextEl.textContent = questions[questionCount].question;
+        questionPanelEl.appendChild(questionTextEl);
 
-    var answerList = document.createElement("ol");
-    for (i = 0; i < 4; i++) {
-        var answerOption = document.createElement("li");
-        var answerButton = document.createElement("button");
-        answerOption.appendChild(answerButton);
-        switch (i) {
-            case 0:
-                answerButton.textContent = questions[questionCount].A;
-                answerButton.id = "A";
-                break;
-            case 1:
-                answerButton.textContent = questions[questionCount].B;
-                answerButton.id = "B";
-                break;
-            case 2:
-                answerButton.textContent = questions[questionCount].C;
-                answerButton.id = "C";
-                break;
-            case 3:
-                answerButton.textContent = questions[questionCount].D;
-                answerButton.id = "D";
-                break;
+        var answerList = document.createElement("ol");
+        for (i = 0; i < 4; i++) {
+            var answerOption = document.createElement("li");
+            var answerButton = document.createElement("button");
+            answerOption.appendChild(answerButton);
+            switch (i) {
+                case 0:
+                    answerButton.textContent = questions[questionCount].A;
+                    answerButton.id = "A";
+                    break;
+                case 1:
+                    answerButton.textContent = questions[questionCount].B;
+                    answerButton.id = "B";
+                    break;
+                case 2:
+                    answerButton.textContent = questions[questionCount].C;
+                    answerButton.id = "C";
+                    break;
+                case 3:
+                    answerButton.textContent = questions[questionCount].D;
+                    answerButton.id = "D";
+                    break;
+            }
+            answerList.appendChild(answerOption);
         }
-        answerList.appendChild(answerOption);
-    }
-    questionPanelEl.appendChild(answerList);
+        questionPanelEl.appendChild(answerList);
 
-    if (timeLeft >= 0) {
-        mainEl.appendChild(questionPanelEl);
+        // if (questionCount > questions.length) {
+        //     clearTimeout(timeLimit);
+        // }
+
+        if (timeLeft > 0.5) {
+            mainEl.appendChild(questionPanelEl);
+        }
     }
-    // questionCount++;
 }
 
 var responseHandler = function(event) {
@@ -216,6 +198,63 @@ var responseHandler = function(event) {
     }
 }
 
+var endGame = function(endType) {
+    if (document.querySelector("#question-panel")) {
+        var questionPanelEl = document.querySelector("#question-panel");
+            questionPanelEl.className = "exit";
+            setTimeout(function() {
+                questionPanelEl.remove();
+            }, 500);
+    }
+
+    timerContainerEl.className = "exit";
+        
+    var timeOutEl = document.createElement("div");
+    timeOutEl.id = "time-out";
+    
+    var h2EndEl = document.createElement("h2");
+    if (endType === "finish") {
+        h2EndEl.textContent = "Well done! You answered all the questions!";
+        clearTimeout(timeLimit);
+    } else if (endType === "time out") {
+        h2EndEl.textContent = "Time's up!";
+    }
+    
+    var h3ScoreEl = document.createElement("h3");
+    h3ScoreEl.textContent = "Final Score: " + score;
+
+    var instructionEl = document.createElement("p");
+    instructionEl.textContent = "Enter your initials (two to four characters)";
+    
+    var scoreFormEl = document.createElement("form");
+    scoreFormEl.id = "score-submit";
+    
+    var initialInputEl = document.createElement("input");
+    initialInputEl.setAttribute("type", "text");
+    initialInputEl.setAttribute("minlength", "2");
+    initialInputEl.setAttribute("maxlength", "4");
+    initialInputEl.setAttribute("size", "7");
+
+    var submitButtonEl = document.createElement("button");
+    submitButtonEl.id = "score-button";
+    submitButtonEl.textContent = "Submit";
+
+    scoreFormEl.appendChild(initialInputEl);
+    scoreFormEl.appendChild(submitButtonEl);
+
+    timeOutEl.appendChild(h2EndEl);
+    timeOutEl.appendChild(h3ScoreEl);
+    timeOutEl.appendChild(instructionEl);
+    timeOutEl.appendChild(scoreFormEl);
+    
+    mainEl.removeEventListener("click", clickHandler);
+
+    setTimeout(function() {
+        mainEl.appendChild(timeOutEl);
+    }, 500);
+    scoreFormEl.addEventListener("submit", scoreHandler);
+}
+
 var scoreHandler = function(event) {
     event.preventDefault();
     console.log(event);
@@ -241,11 +280,16 @@ var scoreHandler = function(event) {
         // debugger;
         var keyValue = JSON.parse(localStorage.getItem(i.toString()));
         scoreList.push(keyValue);
+    }
+
+    scoreList.sort(function(a, b) {
+        return b.score - a.score;
+    });
+
+    for (i = 0; i < scoreList.length; i++) {
         listItemEl = document.createElement("li");
         listItemEl.textContent = scoreList[i].name + ": " + scoreList[i].score;
-        scoreList.sort(function(a, b) {
-            return b.score - a.score;
-        });
+        console.log(scoreList);
         listEl.appendChild(listItemEl);
     }
 

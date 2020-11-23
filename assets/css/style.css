@@ -117,7 +117,7 @@ button.correct, button.correct:hover {
 button.incorrect, button.incorrect:hover {
     background-color: #880000;
     text-decoration: line-through;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
 }
 
 .exit {
@@ -126,16 +126,12 @@ button.incorrect, button.incorrect:hover {
     transition: all 0.5s;
 }
 
-.time-out {
-    position: fixed;
-    z-index: 9999;
-    top: 50%;
+#time-out {
     background-color: #fff;
     color: #000;
     margin: 0 auto;
     text-align: center;
     animation-name: slide-in;
-    font-size: 4em;
 }
 
 #score-button {
@@ -151,4 +147,26 @@ button.incorrect, button.incorrect:hover {
     font-size: inherit;
     border: none;
     cursor: pointer;
+}
+
+#scoreboard ol {
+    line-height: 1.5em;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+@media screen and (max-width: 768px) {
+    main, #start-panel, #question-panel, #time-out {
+        margin: 0 auto 10px auto;
+        max-width: 95vw;
+    }
+
+    button {
+        max-width: 95vw;
+    }
+
+    #question-panel ol {
+        width: 95vw;
+        text-align: center;
+    }
 }
