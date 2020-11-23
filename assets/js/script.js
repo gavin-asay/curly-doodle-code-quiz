@@ -64,15 +64,24 @@ var questions = [
         correct: "B"
     },
     {
-        question: "",
-        A: "",
-        B: "",
-        C: "",
-        D: "",
-        correct: ""
+        question: "Which CSS selector has the highest specificity?",
+        A: "class",
+        B: "element",
+        C: "ID",
+        D: "pseudo-element",
+        correct: "C"
+    },
+    {
+        question: "By default, submitting a form causes the web page to _______.",
+        A: "run formHandler()",
+        B: "open localStorage",
+        C: "reload",
+        D: "crash",
+        correct: "C"
     },
 ];
 
+// grabbing key HTML elements
 var mainEl = document.querySelector("main");
 var startButtonEl = document.querySelector("button#start");
 var startPanelEl = document.querySelector("#start-panel");
@@ -81,11 +90,11 @@ var timerContainerEl = document.querySelector("#timer-container");
 var timeLeft = 59;
 var score = 0;
 var questionCount = 0;
+// to be filled with values retrieved from localStorage
 var scoreList = [];
-var timeLimit = window.setTimeout(function() {
-    endGame("time out");
-}, 61000);
+var timeLimit;
 
+// this directs any click event to the appropriate function, allowing a single event listener to handle most interactivity
 var clickHandler = function(event) {
     if (event.target.id === "start") {
         startGame();
@@ -95,16 +104,21 @@ var clickHandler = function(event) {
 }
 
 var startGame = function() {
-    // debugger;
     var timerEl = document.querySelector("#timer");
+    // .exit CSS ruleset is applied to a few different elements to handle the "slide out" transition; adding the class triggers the animation before the remove() method fires half a second later
     startPanelEl.className = "exit";
     window.setTimeout(function() {
+        // application generally functions by removing the current <div> within <main> and generating the content to follow within a new <div>
         startPanelEl.remove();
         timerContainerEl.className = "visible";
-        // debugger;
         questionRender();
     }, 500);
 
+    timeLimit = window.setTimeout(function() {
+        endGame("time out");
+    }, 61000);
+
+    // timer increments in half-seconds in the background to align endGame() with animations
     window.setInterval(function() {
         if (timeLeft >= 0) {
             timerEl.textContent = Math.ceil(timeLeft) + " seconds remaining";
@@ -116,6 +130,7 @@ var startGame = function() {
 }
 
 var questionRender = function() {
+    // check if user has answered all available questions
     if (questionCount + 1 > questions.length) {
         endGame("finish");
     } else {
@@ -135,6 +150,7 @@ var questionRender = function() {
             var answerOption = document.createElement("li");
             var answerButton = document.createElement("button");
             answerOption.appendChild(answerButton);
+            // the switch grabs the text content from the questions object and assigns each button its id
             switch (i) {
                 case 0:
                     answerButton.textContent = questions[questionCount].A;
@@ -157,10 +173,7 @@ var questionRender = function() {
         }
         questionPanelEl.appendChild(answerList);
 
-        // if (questionCount > questions.length) {
-        //     clearTimeout(timeLimit);
-        // }
-
+        // new question is not displayed if insufficient time is available to complete animation
         if (timeLeft > 0.5) {
             mainEl.appendChild(questionPanelEl);
         }
@@ -171,19 +184,22 @@ var responseHandler = function(event) {
     var questionPanelEl = document.querySelector("#question-panel");
     var scoreDisplayEl = document.querySelector("#score-display");
     console.log(event.target);
+    // correct property for each question object is matched to the button's id
     if (event.target.matches("button#" + questions[questionCount].correct)) {
-        // debugger;
+        // appending the .correct ruleset triggers a color transition
         event.target.className = "correct";
         score++;
         scoreDisplayEl.textContent = "Score: " + score;
         window.setTimeout(function() {
             questionPanelEl.className = "exit";
+            // nested setTimeout methods ensure proper stepwise handling to match animations
             window.setTimeout(function() {
                 questionCount++;
                 questionPanelEl.remove();
                 questionRender();
             }, 500);
         }, 1000);
+        // event.target.matches("button")) prevents stray clicks within mainEl from being handled as incorrect responses
     } else if (event.target.id !== questions[questionCount].correct && event.target.matches("button")) {
         event.target.className = "incorrect";
         document.querySelector("#" + questions[questionCount].correct).className = "correct";
@@ -206,13 +222,14 @@ var endGame = function(endType) {
                 questionPanelEl.remove();
             }, 500);
     }
-
+    // .exit ruleset sets opacity of timer element to 0, <div> is not removed to maintain layout
     timerContainerEl.className = "exit";
         
     var timeOutEl = document.createElement("div");
     timeOutEl.id = "time-out";
     
     var h2EndEl = document.createElement("h2");
+    // check for how quiz ended, either all questions answered or timer reached 0
     if (endType === "finish") {
         h2EndEl.textContent = "Well done! You answered all the questions!";
         clearTimeout(timeLimit);
@@ -247,6 +264,7 @@ var endGame = function(endType) {
     timeOutEl.appendChild(instructionEl);
     timeOutEl.appendChild(scoreFormEl);
     
+    // click event listener is removed in favor of submit listener for initials submission
     mainEl.removeEventListener("click", clickHandler);
 
     setTimeout(function() {
@@ -259,7 +277,6 @@ var scoreHandler = function(event) {
     event.preventDefault();
     console.log(event);
     var initials = document.querySelector("#score-submit input").value;
-    // debugger;
     localStorage.setItem(JSON.stringify(localStorage.length), JSON.stringify({name: initials, score: score.toString() }));
     
     window.setTimeout(function() {
@@ -276,12 +293,14 @@ var scoreHandler = function(event) {
     scoreboardHeaderEl.textContent = "High Scores";
     listEl = document.createElement("ol");
    
+    // localStorage keys are numbers in a string, values are initials and scores
     for (i = 0; i < localStorage.length; i++) {
         // debugger;
         var keyValue = JSON.parse(localStorage.getItem(i.toString()));
         scoreList.push(keyValue);
     }
 
+    // sorts localStorage entries from highest to lowest score
     scoreList.sort(function(a, b) {
         return b.score - a.score;
     });

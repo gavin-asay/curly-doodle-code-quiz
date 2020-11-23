@@ -68,6 +68,7 @@ main {
     animation-name: slide-in;
 }
 
+/* "entry" animation ruleset */
 @keyframes slide-in {
     from {
         opacity: 0;
@@ -81,7 +82,6 @@ main {
 }
 
 #question-panel ol {
-    list-style-type: upper-latin;
     width: 460px;
 }
 
@@ -109,6 +109,7 @@ ol li button:hover {
     transition: background-color 0.2s;
 }
 
+/* adding class="correct" or class="incorrect" changes colors of the corresponding button, indicating status of user response */
 button.correct, button.correct:hover {
     background-color: #008800;
     transition: background-color 0.2s;
@@ -120,6 +121,7 @@ button.incorrect, button.incorrect:hover {
     transition: all 0.2s;
 }
 
+/* adding class="exit" to various elements via JS causes this transition to fire */
 .exit {
     opacity: 0;
     transform: translate(-100px);
